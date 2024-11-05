@@ -1,3 +1,26 @@
+prepare Pi
+- setup image. perpare for your local network. hostname: mybrewery.locl; username: brewmaster; for now: brewmaster
+- try to ping with ping mybrewery.local, if successful, access via ssh ssh brewmaster@mybrewery.local
+-   trouble shoot: arp - a or brew install nmap (more detailled) -> nmap -sn <your_ip_scheme>
+- sudo apt install build-essential python3-dev
+- Option Athrough pip
+  - first curl -sSL https://get.docker.com | sh; then sudo usermod -aG docker $USER; log out and back in to apply Docker permission
+  - Docker Compose may not be pre-installed on the Raspberry Pi, so install it by running:: sudo apt-get update; sudo apt-get install -y libffi-dev libssl-dev; sudo apt-get   install -y python3 python3-pip
+  - sudo apt install pipx
+  sudo pipx ensurepath
+  - pipx install docker-compose
+- Option B Socker Standalone Binary
+  -   sudo curl -L "https://github.com/docker/compose/releases/download/v2.20.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+  - sudo chmod +x /usr/local/bin/docker-compose
+  - check: docker-compose --version
+
+
+
+
+
+
+
+
 Contributing to Homebrew Python Project
 Thank you for considering contributing to this homebrew project! Contributions are welcome and encouraged, whether they are bug fixes, improvements, or new features.
 
