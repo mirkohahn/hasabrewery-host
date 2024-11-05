@@ -14,7 +14,9 @@ prepare Pi
   - sudo chmod +x /usr/local/bin/docker-compose
   - check: docker-compose --version
 
-
+install git sudo apt update; sudo apt install git
+navigate into the folder mkdir <name> (e.g. myBrewery) and cd myBrewery/
+clone repo git clone https...
 
 
 
