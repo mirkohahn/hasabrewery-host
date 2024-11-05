@@ -15,9 +15,35 @@ prepare Pi
   - check: docker-compose --version
 
 
+Project Structure
+myproject/
+├── backend/
+│   ├── app.py
+│   └── Dockerfile
+├── frontend/
+  ├── public/               # Public static files
+  │   ├── index.html        # Main HTML file for the app
+  │   └── favicon.ico       # Favicon or any other public assets
+  │
+  ├── src/                  # Main source folder for the app
+  │   ├── assets/           # Images, icons, and other assets
+  │   ├── components/       # Reusable UI components
+  │   ├── pages/            # Pages representing each route
+  │   ├── services/         # API services and helper functions
+  │   ├── styles/           # Global styles (CSS, SCSS)
+  │   ├── App.js            # Root app component
+  │   ├── index.js          # Entry point for React
+  │   └── setupTests.js     # Test setup for Jest/React Testing Library
+  │
+  ├── .dockerignore         # Files and folders to ignore in Docker builds
+  ├── Dockerfile            # Dockerfile for building the app image
+  ├── package.json          # Project dependencies and scripts
+  └── package-lock.json     # Lockfile for dependencies
 
+└── docker-compose.yml
 
-
+docker-compose up --build -d
+docker-compose down
 
 
 
