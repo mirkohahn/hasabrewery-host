@@ -1,11 +1,10 @@
-# frontend/Dockerfile
-# Use a lightweight Node.js image as the base
+# Use a lightweight Node.js image
 FROM node:18-alpine
 
-# Set the working directory in the container
+# Set the working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json to install dependencies (helps with caching)
+# Copy package.json and package-lock.json
 COPY package*.json ./
 
 # Install dependencies
@@ -14,14 +13,14 @@ RUN npm install
 # Copy the rest of the application code
 COPY . .
 
-# Build the React app for production
+# Build the React app
 RUN npm run build
 
-# Use a simple static server to serve the files, e.g., 'serve'
+# Install 'serve' to serve the app statically
 RUN npm install -g serve
 
-# Expose the port 'serve' will use (e.g., 3000)
-EXPOSE 3000
+# Expose the port 'serve' will use
+EXPOSE 5000
 
-# Start the app using 'serve' on port 3000
-CMD ["serve", "-s", "build", "-l", "3000"]
+# Serve the app
+CMD ["serve", "-s", "build", "-l", "5000"]
