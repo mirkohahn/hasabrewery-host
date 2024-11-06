@@ -4,9 +4,9 @@ services:
   backend:
     build: ./backend
     ports:
-      - "3001:3001"
+      - "7501:5000"  # Maps container's port 5000 to host's port 7501
 
   frontend:
     build: ./frontend
     ports:
-      - "3000:5000"  # Map port 3000 on the host to port 5000 in the container
+      - "7500:5000"  # Maps container's port 5000 to host's port 7500
