@@ -1,0 +1,14 @@
+{
+  "name": "public-frontend",
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1"
+  },
+  "scripts": {
+  "start": "HOST=0.0.0.0 PORT=3000 react-scripts start",
+  "build": "react-scripts build"
+},
+  "proxy": "http://backend-service:${BACKEND_PORT}",
+  "dotenv": true
+}

@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  mqtt-broker:
+    image: eclipse-mosquitto:latest
+    container_name: mqtt-broker
+    restart: unless-stopped
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./mqtt-broker/mosquitto.conf:/mosquitto/config/mosquitto.conf
+    networks:
+      - mqtt_network
+
+  backend:
+    build: ./backend
+    container_name: backend-service
+    restart: unless-stopped
+    ports:
+      - "5678:5678"
+    depends_on:
+      - mqtt-broker
+    networks:
+      - mqtt_network
+  public-frontend:
+    build: ./public-frontend
+    container_name: public-frontend-service
+    restart: unless-stopped
+    ports:
+      - "4567:3000"  # Expose port 3000 to host machine
+    environment:
+      - HOST=0.0.0.0
+      - PORT=3000
+    networks:
+      - mqtt_network
+
+  protected-frontend:
+    build: ./protected-frontend
+    container_name: protected-frontend-service
+    restart: unless-stopped
+    ports:
+      - "22000:3000"
+    environment:
+      - HOST=0.0.0.0
+      - PORT=3000
+    networks:
+      - mqtt_network
+
+networks:
+  mqtt_network:
+    driver: bridge
