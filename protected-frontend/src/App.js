@@ -3,7 +3,7 @@ import React from "react";
 function App() {
   return (
     <div style={{ textAlign: "center", marginTop: "50px" }}>
-      <h1>Frontend is Running!</h1>
+      <h1>Frontend is Running! PROTECTED 2</h1>
     </div>
   );
 }

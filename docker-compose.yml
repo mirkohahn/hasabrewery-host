@@ -33,6 +33,8 @@ services:
       - PORT=3000
     networks:
       - mqtt_network
+    depends_on:
+      - backend
 
   protected-frontend:
     build: ./protected-frontend
