@@ -1,1 +1,0 @@
-# HasABrewery Host Application
