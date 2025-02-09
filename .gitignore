@@ -1,0 +1,58 @@
+
+# Node.js Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+
+# Environment Variables
+.env
+.env.local
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Compiled Output
+dist/
+build/
+.cache/
+.next/
+out/
+
+# Docker
+docker-compose.override.yml
+*.dockerfile
+
+# Editor & OS Files
+.DS_Store
+.idea/
+.vscode/
+*.swp
+Thumbs.db
+
+# TypeScript
+*.tsbuildinfo
+
+# MQTT
+mqtt_host/data/
+mqtt_host/log/
+
+# Backend
+backend/dist/
+backend/.env
+backend/coverage/
+
+# Protected Frontend
+protected_frontend/.next/
+protected_frontend/out/
+protected_frontend/.env.local
+
+# Public Frontend
+public_frontend/.next/
+public_frontend/out/
+public_frontend/.env.local
