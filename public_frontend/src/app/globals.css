@@ -1,21 +1,48 @@
+@import url("https://fonts.googleapis.com/css2?family=Metropolis:wght@400;700&display=swap");
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ================================
+Global Styles
+================================ */
+
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* Base Styles */
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #FAF9F1;
+  width: 100%;
+  max-width: 100%;
+  color: #333;
+  font-family: 'Metropolis', sans-serif;
+  height: 100%;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  box-sizing: border-box;
 }
+
+
+
+
+/* ================================
+Typography Styles
+================================ */
+
+/* Style h1 globally */
+h1 {
+  color: #FCFCF8;
+  font-size: 32px;
+  font-weight: 700; /* Bold */
+}
+
+
+
+

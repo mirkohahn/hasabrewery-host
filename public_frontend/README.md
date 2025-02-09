@@ -1,5 +1,10 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+
+# CUSTOM
+ssh -R 9010:localhost:9010 user@your-server.com
+
+
 ## Getting Started
 
 First, run the development server:
