@@ -1,2 +1,1 @@
-# hasabrewery-host
-Initial Commit
+# HasABrewery Host Application
