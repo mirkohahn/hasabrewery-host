@@ -1,0 +1,19 @@
+/* breakpoints.css */
+:root {
+    --breakpoint-xs: 480px;
+    --breakpoint-sm: 768px;
+    --breakpoint-md: 1024px;
+  }
+  
+  @media (max-width: var(--breakpoint-xs)) {
+    /* Styles for extra small screens */
+  }
+  
+  @media (max-width: var(--breakpoint-sm)) {
+    /* Styles for small screens */
+  }
+  
+  @media (max-width: var(--breakpoint-md)) {
+    /* Styles for medium screens */
+  }
+  

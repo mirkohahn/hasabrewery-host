@@ -1,0 +1,17 @@
+import { NextRequest, NextResponse } from "next/server";
+
+export function middleware(req: NextRequest) {
+  // Extract client IP from headers (for reverse proxy support)
+  const ip =
+    req.headers.get("x-forwarded-for") || req.headers.get("x-real-ip") || "0.0.0.0";
+
+  console.log("Client IP:", ip);
+
+  // Allow local network users (192.168.x.x)
+  if (ip.startsWith("192.168.") || ip.startsWith("127.0.0.1")) {
+    return NextResponse.next(); // Allow direct access
+  }
+
+  // Redirect external users to public frontend (online server)
+  return NextResponse.redirect("http://your-server.com:9010");
+}
