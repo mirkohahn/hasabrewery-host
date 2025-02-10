@@ -86,16 +86,17 @@ export default function AddEditSensorDialog({ open, onClose, sensor }: AddEditSe
   useEffect(() => {
     if ((isReceive || isControl) && logicComponent && deviceTypeSelection) {
       const formattedComponent = logicComponent.replace(/ /g, "_").toLowerCase();
+      const formattedType = deviceTypeSelection.replace(/ /g, "_").toLowerCase();
       const topics = [];
 
       if (isReceive)
         topics.push({
-          topic: `/receive/${formattedComponent}/${deviceTypeSelection.toLowerCase()}/${deviceId}`,
+          topic: `/receive/${formattedComponent}/${formattedType}/${deviceId}`,
           editable: false,
         });
       if (isControl)
         topics.push({
-          topic: `/control/${formattedComponent}/${deviceTypeSelection.toLowerCase()}/${deviceId}`,
+          topic: `/control/${formattedComponent}/${formattedType}/${deviceId}`,
           editable: false,
         });
 
@@ -141,7 +142,7 @@ export default function AddEditSensorDialog({ open, onClose, sensor }: AddEditSe
             value={deviceName}
             onChange={(e) => setDeviceName(e.target.value)}
           />
-          <Tooltip title="Enter a unique name for the device">
+          <Tooltip title="Enter a name for the connection to be displayed.">
             <IconButton>
               <HelpOutlineIcon />
             </IconButton>
@@ -160,7 +161,8 @@ export default function AddEditSensorDialog({ open, onClose, sensor }: AddEditSe
             sx={{ backgroundColor: isControl ? "#007BFF" : "#ccc", color: "white", cursor: "pointer" }}
             onClick={() => setIsControl(!isControl)}
           />
-            <Tooltip title="Select whether the device is a sensor or a controller">
+            <Tooltip title="Sensors only transmit data for you, controllers can execute actions on your commend.
+             Select whether the device is a sensor, controller or both.">
             <IconButton sx={{ marginLeft: "auto" }}>
               <HelpOutlineIcon />
             </IconButton>
@@ -179,7 +181,9 @@ export default function AddEditSensorDialog({ open, onClose, sensor }: AddEditSe
           <Button onClick={() => setDeviceId(generateDeviceId())} sx={{ color: "#2b2d42" }}>
             Generate ID
           </Button>
-          <Tooltip title="Select whether the device is a sensor or a controller">
+          <Tooltip title="Each connection needs a unique device ID. These IDs must be unique (within your eco system
+          and we recommend a 3byte Hex-Value. Simply click the 'Generate ID' button to create a new one - changes are very small
+          to have the same ID twice.">
             <IconButton>
               <HelpOutlineIcon />
             </IconButton>
@@ -192,7 +196,8 @@ export default function AddEditSensorDialog({ open, onClose, sensor }: AddEditSe
             <MenuItem value="Sensor Only">Sensor Only</MenuItem>
             <MenuItem value="Controller">Controller</MenuItem>
           </Select>
-          <Tooltip title="Select whether the device is a sensor or a controller">
+          <Tooltip title="Select whether the device is a sensor only or a controller. Can be changed and is more for better
+          usability and a better overview.">
             <IconButton>
               <HelpOutlineIcon />
             </IconButton>
@@ -209,10 +214,11 @@ export default function AddEditSensorDialog({ open, onClose, sensor }: AddEditSe
             <MenuItem value="Fermenter">Fermenter</MenuItem>
             <MenuItem value="Conditioning Vessel">Conditioning Vessel</MenuItem>
             <MenuItem value="Fridge">Fridge</MenuItem>
-            <MenuItem value="Keezer/Kegerator">Keezer/Kegerator</MenuItem>
+            <MenuItem value="Keezer/Kegerator">Keezer Kegerator</MenuItem>
             <MenuItem value="CUSTOM">Custom</MenuItem>
           </Select>
-          <Tooltip title="Select whether the device is a sensor or a controller">
+          <Tooltip title="Select the brewery component where the device is located. This is used to group devices together.
+          Dont worry about 'what' it does for now. Just select the location, where you want to locate it.">
             <IconButton>
               <HelpOutlineIcon />
             </IconButton>
@@ -241,7 +247,9 @@ export default function AddEditSensorDialog({ open, onClose, sensor }: AddEditSe
             <MenuItem value="Relay">Relay</MenuItem>
             <MenuItem value="CUSTOM">Custom</MenuItem>
           </Select>
-          <Tooltip title="Select whether the device is a sensor or a controller">
+          <Tooltip title="Now select 'what' kind of a device / sensor it is you are adding. Check, what the device does. 
+          This is the type of the device. If you can't find the right one,
+          select 'Custom' and enter the type manually.">
             <IconButton>
               <HelpOutlineIcon />
             </IconButton>
