@@ -1,27 +1,25 @@
 [
   {
-    "id": "2",
-    "name": "Pressure Sensor",
-    "type": "Sensor"
-  },
-  {
-    "id": "5",
-    "name": "Heater Element",
-    "type": "Controller"
-  },
-  {
-    "id": "4",
-    "name": "Pump Controller",
-    "type": "Controller"
-  },
-  {
-    "id": "3",
-    "name": "Flow Meter",
-    "type": "Sensor"
-  },
-  {
-    "id": "1",
-    "name": "Temperature Sensor",
-    "type": "Sensor"
+    "name": "ESP Temp Sensor #1 Battery",
+    "device_id": "6E0A6E",
+    "groups": [
+      "receive"
+    ],
+    "type": "Sensor Only",
+    "logical_brewery_unit": "Fermenter",
+    "device_type": "Thermometer",
+    "mqtt_topics": [
+      "/receive/fermenter/thermometer/6E0A6E"
+    ],
+    "expected_values": [
+      {
+        "value_label": "Brew Temp",
+        "value_name": "temp_brew"
+      },
+      {
+        "value_label": "Ambient Temp",
+        "value_name": "temp_ambient"
+      }
+    ]
   }
 ]

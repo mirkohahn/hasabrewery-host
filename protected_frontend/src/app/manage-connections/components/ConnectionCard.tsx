@@ -9,33 +9,32 @@ import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 
 interface ConnectionCardProps {
   id: number;
-  name: string;
-  device_id: string;
-  values: { type: string; name: string; value: number; unit: string }[]; // Ensure `value` is a number
-  type: string;
-  category: string[];
-  topic_logic_brewery_component: string;
-  topic_device_type: string;
-  status: { status_message: string; transmission_type: string; RSSI: number; firmware: string };
-  battery: number;
-  hasUpdate: boolean;
-  icon: React.ReactNode;
+  name?: string;
+  device_id?: string;
+  values?: { type: string; name: string; value: number; unit: string }[];
+  type?: string;
+  category?: string[];
+  topic_logic_brewery_component?: string;
+  topic_device_type?: string;
+  status?: { status_message: string; transmission_type: string; RSSI: number; firmware: string };
+  battery?: number;
+  hasUpdate?: boolean;
+  icon?: React.ReactNode;
   onEdit: () => void;
 }
 
-
 export default function ConnectionCard({
-  name,
-  device_id,
-  values,
-  type,
-  category,
-  topic_logic_brewery_component,
-  topic_device_type,
-  status,
-  battery,
-  hasUpdate,
-  icon,
+  name = "Unknown Device",
+  device_id = "N/A",
+  values = [],
+  type = "Unknown",
+  category = [],
+  topic_logic_brewery_component = "Unknown Component",
+  topic_device_type = "Unknown Type",
+  status = { status_message: "Unknown", transmission_type: "unknown", RSSI: -100, firmware: "N/A" },
+  battery = 0,
+  hasUpdate = false,
+  icon = null,
   onEdit,
 }: ConnectionCardProps) {
   const [notificationOpen, setNotificationOpen] = useState(false);
@@ -62,7 +61,7 @@ export default function ConnectionCard({
       }}
       elevation={3}
     >
-      {/* Status Indicator (Floating Above Icon) */}
+      {/* Status Indicator */}
       <FiberManualRecordIcon
         sx={{
           position: "absolute",
@@ -73,18 +72,16 @@ export default function ConnectionCard({
         }}
       />
 
-      {/* Row 1: Header */}
+      {/* Header */}
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        {/* Left: Icon & Title (Increased Icon Size) */}
         <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
           <Box sx={{ fontSize: "3rem" }}>{icon}</Box>
           <Typography variant="h6">{name}</Typography>
         </Box>
 
-        {/* Right: Edit & Notification + Device ID (Aligned at Top) */}
         <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-end" }}>
           <Box sx={{ display: "flex", gap: 1 }}>
-            <IconButton sx={{ alignSelf: "flex-start" }} onClick={onEdit}>
+            <IconButton onClick={onEdit}>
               <EditIcon />
             </IconButton>
             {hasUpdate && (
@@ -95,29 +92,27 @@ export default function ConnectionCard({
               </IconButton>
             )}
           </Box>
-          <Typography variant="body2" sx={{ color: "#666" }}>
-            ID: {device_id.toUpperCase()}
-          </Typography>
+          <Typography variant="body2" sx={{ color: "#666" }}>ID: {device_id.toUpperCase()}</Typography>
         </Box>
       </Box>
 
       <Divider />
 
-      {/* Row 2: Category & Type */}
+      {/* Category & Type */}
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <Box sx={{ display: "flex", gap: 1 }}>
-          {category.includes("Control") && <Chip label="Control" sx={{ backgroundColor: "#007BFF", color: "white", borderRadius: "16px", padding: "5px 10px" }} />}
-          {category.includes("Receive") && <Chip label="Receive" sx={{ backgroundColor: "#28A745", color: "white", borderRadius: "16px", padding: "5px 10px" }} />}
+          {category?.includes("control") && <Chip label="Control" sx={{ backgroundColor: "#007BFF", color: "white", borderRadius: "16px", padding: "5px 10px" }} />}
+          {category?.includes("receive") && <Chip label="Receive" sx={{ backgroundColor: "#28A745", color: "white", borderRadius: "16px", padding: "5px 10px" }} />}
         </Box>
         <Typography variant="body2">{type}</Typography>
       </Box>
 
-      {/* Row 3: MQTT Topic */}
+      {/* MQTT Topic */}
       <Typography variant="body2" sx={{ fontWeight: "bold" }}>
         {topic_logic_brewery_component} / {topic_device_type}
       </Typography>
 
-      {/* Row 4: Latest Values */}
+      {/* Latest Values */}
       <Typography variant="body2" sx={{ fontWeight: "bold" }}>
         Latest Values
       </Typography>
@@ -132,9 +127,8 @@ export default function ConnectionCard({
 
       <Divider />
 
-      {/* Row 5: Status Info */}
+      {/* Status Info */}
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 2 }}>
-        {/* Status Info Blocks */}
         <Box sx={{ textAlign: "center", flex: 1 }}>
           <Typography variant="body2" sx={{ fontWeight: "bold" }}>Status</Typography>
           <Typography variant="body2">{status.status_message}</Typography>
@@ -152,7 +146,7 @@ export default function ConnectionCard({
           <Typography variant="body2">{status.firmware}</Typography>
         </Box>
 
-        {/* Battery Icon (Increased Size) */}
+        {/* Battery Icon */}
         <Box>{getBatteryIcon()}</Box>
       </Box>
 

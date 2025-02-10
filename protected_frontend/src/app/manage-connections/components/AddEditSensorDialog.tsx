@@ -48,6 +48,44 @@ export default function AddEditSensorDialog({ open, onClose, sensor }: AddEditSe
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [deleteInput, setDeleteInput] = useState("");
 
+  const handleSave = async () => {
+    const newDevice = {
+      name: deviceName,
+      groups: [isReceive ? "receive" : "", isControl ? "control" : ""].filter(Boolean),
+      device_id: deviceId,
+      type: deviceType,
+      logical_brewery_unit: logicComponent,
+      device_type: deviceTypeSelection,
+      mqtt_topics: mqttTopics.map((t) => t.topic),
+      expected_values: expectedValues.map((val) => ({
+        value_label: val.label,
+        value_name: val.name,
+      })),
+    };
+  
+    try {
+      const response = await fetch("http://localhost:3001/api/devices", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newDevice),
+      });
+  
+      if (!response.ok) {
+        const errorMessage = await response.text(); // Capture detailed error response
+        console.error("Failed to save device:", errorMessage);
+        return;
+      }
+  
+      console.log("Device saved successfully");
+      onClose();
+    } catch (error) {
+      console.error("Error saving device:", error);
+    }
+  };
+  
+
   // Reset form when adding a new connection
   useEffect(() => {
     if (!sensor) {
@@ -324,7 +362,7 @@ export default function AddEditSensorDialog({ open, onClose, sensor }: AddEditSe
         <Button onClick={onClose} sx={{ color: "#2b2d42" }}>
           Cancel
         </Button>
-        <Button variant="contained" sx={{ backgroundColor: "#2b2d42", color: "#FFF" }}>
+        <Button variant="contained" sx={{ backgroundColor: "#2b2d42", color: "#FFF" }} onClick={handleSave}>
           Save
         </Button>
       </DialogActions>

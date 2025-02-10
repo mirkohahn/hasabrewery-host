@@ -1,8 +1,8 @@
-import fs from 'fs';
-import path from 'path';
-import { Request, Response } from 'express';
+import fs from "fs";
+import path from "path";
+import { Request, Response } from "express";
 
-const DEVICES_FILE_PATH = path.join(__dirname, '../data/devices.json');
+const DEVICES_FILE_PATH = path.join(__dirname, "../data/devices.json");
 
 // Ensure the devices.json file exists
 if (!fs.existsSync(DEVICES_FILE_PATH)) {
@@ -25,33 +25,45 @@ const loadDevices = (): any[] => {
   }
 };
 
-
-
 // Save devices to file
 const saveDevices = (devices: any[]) => {
   try {
     fs.writeFileSync(DEVICES_FILE_PATH, JSON.stringify(devices, null, 2));
   } catch (error) {
-    console.error('Error writing to devices.json:', error);
+    console.error("Error writing to devices.json:", error);
   }
 };
 
 export const createDevice = (req: Request, res: Response) => {
-  const { id, name, type } = req.body;
-  if (!id || !name || !type) {
-    return res.status(400).json({ error: 'Missing required fields' });
+  const { name, device_id, groups, type, logical_brewery_unit, device_type, mqtt_topics, expected_values } = req.body;
+
+  // Validate required fields
+  if (!name || !device_id) {
+    return res.status(400).json({ error: "Missing required fields: name, device_id" });
   }
 
   const devices = loadDevices();
-  if (devices.find((device) => device.id === id)) {
-    return res.status(400).json({ error: 'Device with this ID already exists' });
+
+  if (devices.find((device) => device.device_id === device_id)) {
+    return res.status(400).json({ error: "Device with this ID already exists" });
   }
 
-  const newDevice = { id, name, type };
+  // Create new device with optional values set to empty defaults
+  const newDevice = {
+    name,
+    device_id,
+    groups: groups || [], // Defaults to an empty array
+    type: type || "", // Defaults to empty string
+    logical_brewery_unit: logical_brewery_unit || "", // Defaults to empty string
+    device_type: device_type || "", // Defaults to empty string
+    mqtt_topics: mqtt_topics || [], // Defaults to an empty array
+    expected_values: expected_values || [], // Defaults to an empty array
+  };
+
   devices.push(newDevice);
   saveDevices(devices);
 
-  res.status(201).json({ message: 'Device created successfully', device: newDevice });
+  res.status(201).json({ message: "Device created successfully", device: newDevice });
 };
 
 export const getDevices = (req: Request, res: Response) => {
@@ -61,21 +73,21 @@ export const getDevices = (req: Request, res: Response) => {
 
 export const getDeviceById = (req: Request, res: Response) => {
   const devices = loadDevices();
-  const device = devices.find((d) => d.id === req.params.id);
+  const device = devices.find((d) => d.device_id === req.params.id);
   if (!device) {
-    return res.status(404).json({ error: 'Device not found' });
+    return res.status(404).json({ error: "Device not found" });
   }
   res.status(200).json(device);
 };
 
 export const deleteDeviceById = (req: Request, res: Response) => {
   let devices = loadDevices();
-  const index = devices.findIndex((d) => d.id === req.params.id);
+  const index = devices.findIndex((d) => d.device_id === req.params.id);
   if (index === -1) {
-    return res.status(404).json({ error: 'Device not found' });
+    return res.status(404).json({ error: "Device not found" });
   }
 
   devices.splice(index, 1);
   saveDevices(devices);
-  res.status(200).json({ message: 'Device deleted successfully' });
+  res.status(200).json({ message: "Device deleted successfully" });
 };
