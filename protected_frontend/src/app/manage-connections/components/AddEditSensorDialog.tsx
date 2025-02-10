@@ -45,6 +45,8 @@ export default function AddEditSensorDialog({ open, onClose, sensor }: AddEditSe
   const [customDeviceType, setCustomDeviceType] = useState("");
   const [expectedValues, setExpectedValues] = useState<{ label: string; name: string }[]>([]);
   const [mqttTopics, setMqttTopics] = useState<{ topic: string; editable: boolean }[]>([]);
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [deleteInput, setDeleteInput] = useState("");
 
   // Reset form when adding a new connection
   useEffect(() => {
@@ -71,6 +73,14 @@ export default function AddEditSensorDialog({ open, onClose, sensor }: AddEditSe
       setExpectedValues(sensor.expectedValues || []);
     }
   }, [open, sensor]);
+
+  const handleDelete = () => {
+    if (deleteInput.toLowerCase() === "delete") {
+      console.log("Connection deleted");
+      setDeleteConfirmOpen(false);
+      onClose();
+    }
+  };
 
   // Generate MQTT topic dynamically
   useEffect(() => {
@@ -150,6 +160,11 @@ export default function AddEditSensorDialog({ open, onClose, sensor }: AddEditSe
             sx={{ backgroundColor: isControl ? "#007BFF" : "#ccc", color: "white", cursor: "pointer" }}
             onClick={() => setIsControl(!isControl)}
           />
+            <Tooltip title="Select whether the device is a sensor or a controller">
+            <IconButton sx={{ marginLeft: "auto" }}>
+              <HelpOutlineIcon />
+            </IconButton>
+            </Tooltip>
         </Box>
 
         {/* Device ID with Generate Button */}
@@ -161,9 +176,14 @@ export default function AddEditSensorDialog({ open, onClose, sensor }: AddEditSe
             value={deviceId}
             onChange={(e) => setDeviceId(e.target.value.toUpperCase())}
           />
-          <Button onClick={() => setDeviceId(generateDeviceId())} sx={{ color: "#007BFF" }}>
+          <Button onClick={() => setDeviceId(generateDeviceId())} sx={{ color: "#2b2d42" }}>
             Generate ID
           </Button>
+          <Tooltip title="Select whether the device is a sensor or a controller">
+            <IconButton>
+              <HelpOutlineIcon />
+            </IconButton>
+          </Tooltip>
         </Box>
 
         {/* Controller or Sensor Selection */}
@@ -192,6 +212,11 @@ export default function AddEditSensorDialog({ open, onClose, sensor }: AddEditSe
             <MenuItem value="Keezer/Kegerator">Keezer/Kegerator</MenuItem>
             <MenuItem value="CUSTOM">Custom</MenuItem>
           </Select>
+          <Tooltip title="Select whether the device is a sensor or a controller">
+            <IconButton>
+              <HelpOutlineIcon />
+            </IconButton>
+          </Tooltip>
         </Box>
         {logicComponent === "CUSTOM" && (
           <TextField
@@ -216,6 +241,11 @@ export default function AddEditSensorDialog({ open, onClose, sensor }: AddEditSe
             <MenuItem value="Relay">Relay</MenuItem>
             <MenuItem value="CUSTOM">Custom</MenuItem>
           </Select>
+          <Tooltip title="Select whether the device is a sensor or a controller">
+            <IconButton>
+              <HelpOutlineIcon />
+            </IconButton>
+          </Tooltip>
         </Box>
         {deviceTypeSelection === "CUSTOM" && (
           <TextField
@@ -246,9 +276,11 @@ export default function AddEditSensorDialog({ open, onClose, sensor }: AddEditSe
         )}
 
         {/* Expected Values */}
-        <Button startIcon={<AddCircleOutlineIcon />} onClick={addExpectedValue} sx={{ marginTop: 2 }}>
-          Expect Value
+        
+          <Button startIcon={<AddCircleOutlineIcon />} onClick={addExpectedValue} sx={{ marginTop: 2, color: "#2b2d42" }}>
+          Expect Values
         </Button>
+        
         {expectedValues.map((val, idx) => (
           <Box key={idx} sx={{ display: "flex", gap: 2, marginTop: 1 }}>
             <TextField
@@ -271,7 +303,16 @@ export default function AddEditSensorDialog({ open, onClose, sensor }: AddEditSe
           </Box>
         ))}
       </DialogContent>
+
       <DialogActions>
+        <Box sx={{ flexGrow: 1 }}>
+          <Button
+            onClick={() => setDeleteConfirmOpen(true)}
+            sx={{ border: "1px solid red", color: "red", "&:hover": { backgroundColor: "rgba(255,0,0,0.1)" } }}
+          >
+            Delete Connection
+          </Button>
+        </Box>
         <Button onClick={onClose} sx={{ color: "#2b2d42" }}>
           Cancel
         </Button>
@@ -279,6 +320,24 @@ export default function AddEditSensorDialog({ open, onClose, sensor }: AddEditSe
           Save
         </Button>
       </DialogActions>
+
+
+      {/* Confirm Delete Dialog */}
+      <Dialog open={deleteConfirmOpen} onClose={() => setDeleteConfirmOpen(false)}>
+        <DialogTitle>Confirm Deletion</DialogTitle>
+        <DialogContent>
+          <Typography>Type "delete" to confirm deletion.</Typography>
+          <TextField fullWidth variant="outlined" value={deleteInput} onChange={(e) => setDeleteInput(e.target.value)} />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDeleteConfirmOpen(false)} sx={{ color: "#2b2d42" }}>
+            Cancel
+          </Button>
+          <Button onClick={handleDelete} variant="contained" sx={{ backgroundColor: "red", color: "#FFF" }} disabled={deleteInput.toLowerCase() !== "delete"}>
+            Confirm Deletion
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Dialog>
   );
 }

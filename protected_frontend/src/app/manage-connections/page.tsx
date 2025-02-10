@@ -113,7 +113,7 @@ export default function ManageConnections() {
       </Box>
 
       {/* Floating Help Button */}
-      <IconButton onClick={() => setHelpOpen(true)} sx={{ position: "fixed", bottom: 20, right: 20, backgroundColor: "#2b2d42", color: "#FFF", width: 50, height: 50, borderRadius: "50%" }}>
+      <IconButton onClick={() => setHelpOpen(true)} sx={{ position: "fixed", bottom: 20, right: 20, backgroundColor: "#FABC18", color: "#2b2d42", width: 50, height: 50, borderRadius: "50%" }}>
         <HelpOutlineIcon />
       </IconButton>
 
