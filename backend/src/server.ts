@@ -1,23 +1,26 @@
 import express from "express";
-import bodyParser from "body-parser";
-
-import connectionsRoutes from "./routes/connectionsRoutes";
-import mqttRoutes from "./routes/mqttRoutes";
-import { errorHandler } from "./middlewares/errorHandler";
+import cors from "cors";
+import devicesRoutes from "./routes/devicesRoutes"; // ✅ Ensure this file exists!
+import logsRoutes from "./routes/logsRoutes"; // ✅ Ensure this file exists!,
+import mqttService from "./services/mqttService";
 
 const app = express();
-const PORT = 3000;
+const PORT = 3001;
 
-// Middleware
-app.use(bodyParser.json());
-app.use("/connections", connectionsRoutes);
-app.use("/mqtt", mqttRoutes);
-app.use(errorHandler);
+app.use(cors());
+app.use(express.json());
 
-// Start MQTT Client
-mqttClient.connect();
+// ✅ Attach API Routes
+app.use("/api/devices", devicesRoutes);
+app.use("/api/logs", logsRoutes);
 
-// Start Server
+
+mqttService.init();
+
+app.get("/", (req, res) => {
+  res.send("Backend API is running!");
+});
+
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
