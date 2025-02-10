@@ -1,0 +1,27 @@
+[
+  {
+    "id": "2",
+    "name": "Pressure Sensor",
+    "type": "Sensor"
+  },
+  {
+    "id": "5",
+    "name": "Heater Element",
+    "type": "Controller"
+  },
+  {
+    "id": "4",
+    "name": "Pump Controller",
+    "type": "Controller"
+  },
+  {
+    "id": "3",
+    "name": "Flow Meter",
+    "type": "Sensor"
+  },
+  {
+    "id": "1",
+    "name": "Temperature Sensor",
+    "type": "Sensor"
+  }
+]
