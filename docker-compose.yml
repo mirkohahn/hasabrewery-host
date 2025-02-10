@@ -9,6 +9,10 @@ services:
       - .env
     networks:
       - brewery
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    command: ["npm", "start"]
 
   public_frontend:
     build: ./public_frontend
@@ -20,6 +24,11 @@ services:
       - brewery
     depends_on:
       - backend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: ["npm", "run", "dev"]
+
 
   protected_frontend:
     build: ./protected_frontend
@@ -31,6 +40,11 @@ services:
       - brewery
     depends_on:
       - backend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: ["npm", "run", "dev"]
+
 
   mqtt:
     build: ./mqtt_host
