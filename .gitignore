@@ -45,6 +45,7 @@ mqtt_host/log/
 # Backend
 backend/dist/
 backend/.env
+backend/src/logs/mqtt_logs.json
 backend/coverage/
 
 # Protected Frontend

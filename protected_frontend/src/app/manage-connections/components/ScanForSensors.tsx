@@ -11,65 +11,70 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  TableContainer,
+  Paper,
   Box,
 } from "@mui/material";
 
 interface Sensor {
   topic: string;
-  values: Record<string, string>;
+  timestamp: string;
 }
 
 interface ScanForSensorsProps {
   open: boolean;
   onClose: () => void;
-  onSensorSelect: (sensor: Sensor) => void;
+  onSensorSelect: (topic: string) => void; // Forward the topic only
 }
 
 export default function ScanForSensors({ open, onClose, onSensorSelect }: ScanForSensorsProps) {
   const [receiveSensors, setReceiveSensors] = useState<Sensor[]>([]);
   const [controlSensors, setControlSensors] = useState<Sensor[]>([]);
   const [isScanning, setIsScanning] = useState(false);
-  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    setIsClient(true);
-
     if (open) {
-      setReceiveSensors([]);
-      setControlSensors([]);
+      const fetchSensors = async () => {
+        try {
+          const receiveResponse = await fetch("http://localhost:3001/api/logs?topic=/receive/#");
+          if (receiveResponse.ok) {
+            const receiveData = await receiveResponse.json();
+            const parsedReceive = receiveData
+              .map((log: any) => ({
+                topic: log.topic,
+                timestamp: log.timestamp,
+              }))
+              .slice(-5) // Take the last 5 entries
+              .reverse(); // Reverse to have newest on top
+            setReceiveSensors(parsedReceive);
+          }
+
+          const controlResponse = await fetch("http://localhost:3001/api/logs?topic=/control/#");
+          if (controlResponse.ok) {
+            const controlData = await controlResponse.json();
+            const parsedControl = controlData
+              .map((log: any) => ({
+                topic: log.topic,
+                timestamp: log.timestamp,
+              }))
+              .slice(-5) // Take the last 5 entries
+              .reverse(); // Reverse to have newest on top
+            setControlSensors(parsedControl);
+          }
+        } catch (error) {
+          console.error("Error fetching sensor data:", error);
+        }
+      };
+
       setIsScanning(true);
+      const interval = setInterval(fetchSensors, 1000);
 
-      const mockReceiveSensors: Sensor[] = [
-        { topic: "/receive/fermenter/thermometer/123ABC", values: { temperature: "25°C" } },
-        { topic: "/receive/mash_tun/thermometer/456DEF", values: { temperature: "65°C" } },
-      ];
-      const mockControlSensors: Sensor[] = [
-        { topic: "/control/boil_kettle/pump/789GHI", values: { state: "ON" } },
-        { topic: "/control/herms_kettle/valve/012JKL", values: { state: "CLOSED" } },
-      ];
-
-      let index = 0;
-      const interval = setInterval(() => {
-        if (index < mockReceiveSensors.length) {
-          setReceiveSensors((prev) => [...prev, mockReceiveSensors[index]].filter(Boolean));
-        }
-        if (index < mockControlSensors.length) {
-          setControlSensors((prev) => [...prev, mockControlSensors[index]].filter(Boolean));
-        }
-        index++;
-        if (index >= mockReceiveSensors.length && index >= mockControlSensors.length) {
-          clearInterval(interval);
-          setIsScanning(false);
-        }
-      }, 2000);
-
-      return () => clearInterval(interval);
+      return () => {
+        clearInterval(interval);
+        setIsScanning(false);
+      };
     }
   }, [open]);
-
-  if (!isClient) {
-    return null;
-  }
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
@@ -86,73 +91,71 @@ export default function ScanForSensors({ open, onClose, onSensorSelect }: ScanFo
 
         {/* Receive Sensors Table */}
         <Typography variant="h6" sx={{ marginTop: 2, marginBottom: 1 }}>
-          Found Sensors (/receive/#)
+          Last 5 Messages (/receive/#)
         </Typography>
-        <Table>
-          <TableBody>
-            {receiveSensors.length > 0 ? (
-              receiveSensors.map((sensor, idx) => (
-                sensor?.topic ? (
+        <TableContainer component={Paper}>
+          <Table>
+            <TableBody>
+              {receiveSensors.length > 0 ? (
+                receiveSensors.map((sensor, idx) => (
                   <TableRow
                     key={idx}
                     hover
-                    onClick={() => onSensorSelect(sensor)}
+                    onClick={() => onSensorSelect(sensor.topic)} // Forward the topic
                     sx={{ cursor: "pointer" }}
                   >
-                    <TableCell>{sensor.topic}</TableCell>
+                    <TableCell sx={{ width: "30%" }}>
+                      <Typography noWrap>{new Date(sensor.timestamp).toLocaleString()}</Typography>
+                    </TableCell>
                     <TableCell>
-                      {sensor.values &&
-                        Object.entries(sensor.values).map(([key, value]) => (
-                          <Typography key={key}>{key}: {value}</Typography>
-                        ))}
+                      <Typography noWrap>{sensor.topic}</Typography>
                     </TableCell>
                   </TableRow>
-                ) : null
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={2} align="center">
-                  <Typography>No sensors found</Typography>
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={2} align="center">
+                    <Typography>No sensors found</Typography>
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
 
         {/* Control Sensors Table */}
-        <Typography variant="h6" sx={{ marginTop: 2, marginBottom: 1 }}>
-          Found Sensors (/control/#)
+        <Typography variant="h6" sx={{ marginTop: 3, marginBottom: 1 }}>
+          Last 5 Messages (/control/#)
         </Typography>
-        <Table>
-          <TableBody>
-            {controlSensors.length > 0 ? (
-              controlSensors.map((sensor, idx) => (
-                sensor?.topic ? (
+        <TableContainer component={Paper}>
+          <Table>
+            <TableBody>
+              {controlSensors.length > 0 ? (
+                controlSensors.map((sensor, idx) => (
                   <TableRow
                     key={idx}
                     hover
-                    onClick={() => onSensorSelect(sensor)}
+                    onClick={() => onSensorSelect(sensor.topic)} // Forward the topic
                     sx={{ cursor: "pointer" }}
                   >
-                    <TableCell>{sensor.topic}</TableCell>
+                    <TableCell sx={{ width: "30%" }}>
+                      <Typography noWrap>{new Date(sensor.timestamp).toLocaleString()}</Typography>
+                    </TableCell>
                     <TableCell>
-                      {sensor.values &&
-                        Object.entries(sensor.values).map(([key, value]) => (
-                          <Typography key={key}>{key}: {value}</Typography>
-                        ))}
+                      <Typography noWrap>{sensor.topic}</Typography>
                     </TableCell>
                   </TableRow>
-                ) : null
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={2} align="center">
-                  <Typography>No sensors found</Typography>
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={2} align="center">
+                    <Typography>No sensors found</Typography>
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} sx={{ color: "#2b2d42" }}>
