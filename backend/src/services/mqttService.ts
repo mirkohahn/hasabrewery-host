@@ -2,7 +2,7 @@ import mqtt, { MqttClient } from "mqtt";
 import fs from "fs";
 import path from "path";
 
-const MQTT_BROKER_URL = "mqtt://localhost:1883";
+const MQTT_BROKER_URL = "mqtt://192.168.0.56:1883"; 
 const LOG_FILE_PATH = path.join(__dirname, "../logs/mqtt_logs.json");
 let mqttClient: MqttClient;
 
@@ -10,8 +10,10 @@ const mqttService = {
   init: () => {
     mqttClient = mqtt.connect(MQTT_BROKER_URL);
     mqttClient.on("connect", () => {
-      console.log("Connected to MQTT broker.");
+      console.log("Connected to MQTT broker. Connected to: ", MQTT_BROKER_URL);
+      mqttClient.subscribe("receive/#");
       mqttClient.subscribe("/receive/#");
+      mqttClient.subscribe("control/#");
       mqttClient.subscribe("/control/#");
     });
 

@@ -37,3 +37,55 @@ sudo docker version
 Allow docker to run without sudo
 sudo usermod -aG docker $USER
 newgrp docker
+
+TROUBLESHOOT at compose up
+ FYI 19 does not yet support json viewer(?)
+cd protected
+npm uninstall react-json-view flux
+npm uninstall react react-dom
+npm install react@18 react-dom@18
+npm install
+cd.. 
+compose up
+
+
+install npm
+sudo apt install -y nodejs npm
+
+
+check node and npm version
+````
+node -v
+npm -v
+````
+
+
+
+
+# FYI
+this one still broken
+cd backend && npm install && cd ../frontend && npm install && cd ..
+still thowing errors - t be fixed
+
+
+
+3. If Files Are Missing, Initialize npm
+If the package.json and package-lock.json are missing, you need to generate them:
+
+bash
+Kopieren
+Bearbeiten
+cd protected_frontend
+npm init -y
+npm install
+Then repeat the same for public_frontend:
+
+bash
+Kopieren
+Bearbeiten
+cd ../public_frontend
+npm init -y
+npm install
+
+npm cache clean --force
+npm install --legacy-peer-deps

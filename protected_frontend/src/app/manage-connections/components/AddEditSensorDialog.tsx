@@ -250,6 +250,7 @@ export default function AddEditSensorDialog({ open, onClose, sensor }: AddEditSe
             <MenuItem value="Boil Kettle">Boil Kettle</MenuItem>
             <MenuItem value="HERMS Kettle">HERMS Kettle</MenuItem>
             <MenuItem value="Fermenter">Fermenter</MenuItem>
+            <MenuItem value="Fermentation Chamber">Fermentation Chamber</MenuItem>
             <MenuItem value="Conditioning Vessel">Conditioning Vessel</MenuItem>
             <MenuItem value="Fridge">Fridge</MenuItem>
             <MenuItem value="Keezer/Kegerator">Keezer Kegerator</MenuItem>
@@ -278,6 +279,7 @@ export default function AddEditSensorDialog({ open, onClose, sensor }: AddEditSe
             <MenuItem value="Thermometer">Thermometer</MenuItem>
             <MenuItem value="Pressure Sensor">Pressure Sensor</MenuItem>
             <MenuItem value="Solenoid Valve">Solenoid Valve</MenuItem>
+            <MenuItem value="Controller">Controller</MenuItem>
             <MenuItem value="Pump">Pump</MenuItem>
             <MenuItem value="Heater">Heater</MenuItem>
             <MenuItem value="Cooler">Cooler</MenuItem>

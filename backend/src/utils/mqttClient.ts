@@ -2,7 +2,7 @@ import mqtt, { MqttClient } from "mqtt";
 import fs from "fs";
 import path from "path";
 
-const MQTT_BROKER_URL = "mqtt://localhost:1883"; // Adjust if needed
+const MQTT_BROKER_URL = "mqtt://192.168.0.56:1883"; 
 const LOG_FILE_PATH = path.resolve(__dirname, "../logs/mqtt_logs.json");
 
 // Ensure log file exists
@@ -15,14 +15,14 @@ const mqttClient: MqttClient = mqtt.connect(MQTT_BROKER_URL);
 mqttClient.on("connect", () => {
   console.log("✅ Connected to MQTT broker");
 
-  mqttClient.subscribe("/receive/#", (err) => {
-    if (err) console.error("❌ Failed to subscribe to /receive/#", err);
-    else console.log("✅ Subscribed to /receive/#");
+  mqttClient.subscribe("receive/#", (err) => {
+    if (err) console.error("❌ Failed to subscribe to receive/#", err);
+    else console.log("✅ Subscribed to receive/#");
   });
 
   mqttClient.subscribe("/control/#", (err) => {
-    if (err) console.error("❌ Failed to subscribe to /control/#", err);
-    else console.log("✅ Subscribed to /control/#");
+    if (err) console.error("❌ Failed to subscribe to control/#", err);
+    else console.log("✅ Subscribed to control/#");
   });
 });
 

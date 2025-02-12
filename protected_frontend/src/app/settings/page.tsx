@@ -35,6 +35,12 @@ export default function LogsPage() {
       <Typography variant="h5" sx={{ color: "gray" }}>
         Coming Soon!
       </Typography>
+      Include:<br/>
+      - ports<br/>
+      - up to 10 Hot-Links / Short Cuts<br/>
+      - default Chart Dashboard<br/>
+      - Metric/IMperial<br/>
+      - <br/>
     </Box>
   );
 }
